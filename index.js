@@ -21,23 +21,49 @@ var stripDates = [
 var port = process.env.PORT || 9000;
 
 app.get('/', function (req, res) {
-  var stripDate = stripDates[Math.floor(Math.random()*stripDates.length)];
-  res.setHeader('content-type', 'application/json');
-  var jsonResponse = 
+
+  var jsonResponse =
   {
       "parse": "full",
       "response_type": "in_channel",
-      "text": "http://dilbert.com/strip/" + stripDate,
+      "text": "",
       "attachments":[
           {
-              "image_url": "http://dilbert.com/strip/" + stripDate
+              "image_url": ""
           }
       ],
       "unfurl_media":true,
       "unfurl_links":true
   }
-  res.send(jsonResponse);
 
+  var query = req.query.text;
+
+  if (query != null) {
+    var request = require('request');
+    var cheerio = require('cheerio');
+    var links = [];
+    request('http://dilbert.com/search_results?terms='+encodeURIComponent(query), function (error, response, html) {
+      if (!error && response.statusCode == 200) {
+        var $ = cheerio.load(html);
+        $('.img-comic-link').each(function(i, element){
+          var a = $(this).attr('href');
+          links[i] = a;
+        });
+      }
+      var link = links[Math.floor(Math.random()*links.length)];
+      res.setHeader('content-type', 'application/json');
+      jsonResponse.text = link;
+      jsonResponse.attachments[0].image_url = link;
+      res.send(jsonResponse);
+    });
+  }
+  else {
+    var stripDate = stripDates[Math.floor(Math.random()*stripDates.length)];
+    res.setHeader('content-type', 'application/json');
+    jsonResponse.text = "http://dilbert.com/strip/" + stripDate;
+    jsonResponse.attachments[0].image_url = "http://dilbert.com/strip/" + stripDate;
+    res.send(jsonResponse);
+  }
 
 });
 
