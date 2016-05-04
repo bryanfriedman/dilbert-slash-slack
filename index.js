@@ -18,12 +18,16 @@ var stripDates = [
 
 ]
 
+var port = process.env.PORT || 9000;
 
 app.get('/', function (req, res) {
   var stripDate = stripDates[Math.floor(Math.random()*items.length)]; =
   res.send('http://dilbert.com/strip/' + stripDate);
 });
 
-app.listen(80, function () {
-  console.log('Example app listening on port 80!');
+app.listen(port, function () {
+  var host = server.address().address;
+  var port = server.address().port;
+
+  console.log('Dilbert Slash Slack app listening at http://%s:%s', host, port);
 });
