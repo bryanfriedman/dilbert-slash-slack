@@ -21,7 +21,7 @@ var stripDates = [
 var port = process.env.PORT || 9000;
 
 app.get('/', function (req, res) {
-  var stripDate = stripDates[Math.floor(Math.random()*items.length)];
+  var stripDate = stripDates[Math.floor(Math.random()*stripDates.length)];
   res.send('http://dilbert.com/strip/' + stripDate);
 });
 
