@@ -38,7 +38,7 @@ app.get('/', function (req, res) {
 
   var query = req.query.text;
 
-  if (query != null || query == '') {
+  if (query != null && query != "") {
     var request = require('request');
     var cheerio = require('cheerio');
     var links = [];
