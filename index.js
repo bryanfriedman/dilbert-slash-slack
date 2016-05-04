@@ -22,7 +22,23 @@ var port = process.env.PORT || 9000;
 
 app.get('/', function (req, res) {
   var stripDate = stripDates[Math.floor(Math.random()*stripDates.length)];
-  res.send('http://dilbert.com/strip/' + stripDate);
+  res.setHeader('content-type', 'application/json');
+  var jsonResponse = 
+  {
+      "parse": "full",
+      "response_type": "in_channel",
+      "text": "http://dilbert.com/strip/" + stripDate,
+      "attachments":[
+          {
+              "image_url": "http://dilbert.com/strip/" + stripDate
+          }
+      ],
+      "unfurl_media":true,
+      "unfurl_links":true
+  }
+  res.send(jsonResponse);
+
+
 });
 
 var server = app.listen(port, function () {
