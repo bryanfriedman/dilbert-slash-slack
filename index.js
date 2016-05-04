@@ -21,11 +21,11 @@ var stripDates = [
 var port = process.env.PORT || 9000;
 
 app.get('/', function (req, res) {
-  var stripDate = stripDates[Math.floor(Math.random()*items.length)]; =
+  var stripDate = stripDates[Math.floor(Math.random()*items.length)];
   res.send('http://dilbert.com/strip/' + stripDate);
 });
 
-app.listen(port, function () {
+var server = app.listen(port, function () {
   var host = server.address().address;
   var port = server.address().port;
 
