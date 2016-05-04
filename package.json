@@ -1,0 +1,12 @@
+{
+  "name": "dilbert-slash-slack",
+  "private": true,
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+  }
