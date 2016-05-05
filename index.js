@@ -36,6 +36,12 @@ app.get('/', function (req, res) {
       "unfurl_links":true
   }
 
+  var errorResponse =
+  {
+      "text": "No comics could be found that match that search query."
+  }
+
+
   var query = req.query.text;
 
   if (query != null && query != "") {
@@ -50,11 +56,17 @@ app.get('/', function (req, res) {
           links[i] = a;
         });
       }
-      var link = links[Math.floor(Math.random()*links.length)];
-      res.setHeader('content-type', 'application/json');
-      jsonResponse.text = link;
-      jsonResponse.attachments[0].image_url = link;
-      res.send(jsonResponse);
+      if (links.length == 0) {
+        res.setHeader('content-type', 'application/json');
+        res.send(errorResponse);
+      }
+      else {
+        var link = links[Math.floor(Math.random()*links.length)];
+        res.setHeader('content-type', 'application/json');
+        jsonResponse.text = link;
+        jsonResponse.attachments[0].image_url = link;
+        res.send(jsonResponse);
+      }
     });
   }
   else {
